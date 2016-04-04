@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     $.ajax({
       type: "POST",
-      url: "http://127.0.0.1:8000/api/problems/update/",
+      url: "/api/problems/update/",
       async: true,
       data: {
         "oj_name": oj_name
