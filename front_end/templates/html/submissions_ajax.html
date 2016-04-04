@@ -1,0 +1,44 @@
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-xs-2">Problem ID</th>
+            <th class="col-xs-3">Problem</th>
+            <th class="col-xs-3">Result</th>
+            <th class="col-xs-2">Running Info</th>
+            <th class="col-xs-2">Submit Time</th>
+          </tr>
+        </thead>
+        <tbody>
+      {% for submission in submissions.slice %}
+          <tr>
+            <td class="col-xs-2">
+              <h4>{{ submission.problem_id }}</h4>
+              <p>{{ submission.oj_caption }}</p>
+            </td>
+            <td class="col-xs-3">
+              <h3>{{ submission.problem_title }}</h3>
+            </td>
+            <td class="col-xs-3">
+              <h3 class="{% if submission.result == 'Accepted' %}text-success{% endif %}">{{ submission.result }}</h3>
+              <p>Language: {{ submission.language }}</p>
+            </td>
+            <td class="col-xs-2">
+              <p>Run Time: {{ submission.run_time }}ms</p>
+              <p>Run Memory: {% if submission.run_memory != -1 %}{{ submission.run_memory }}ms{% else %}--{% endif %}</p>
+            </td>
+            <td class="col-xs-2">
+              <p class="calculate-time">{{ submission.sub_time }}</p>
+            </td>
+          </tr>
+      {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="col-xs-2">Problem ID</th>
+            <th class="col-xs-3">Problem</th>
+            <th class="col-xs-3">Result</th>
+            <th class="col-xs-2">Running Info</th>
+            <th class="col-xs-2">Submit Time</th>
+          </tr>
+        </tfoot>
+      </table>

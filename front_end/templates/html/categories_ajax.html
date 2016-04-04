@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+{% load staticfiles %}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--图标样式-->
+<link rel="stylesheet" href='{% static "css/bootstrap.min.css" %}'>
+<!--主要样式-->
+<link rel="stylesheet" href='{% static "css/page/tree.css" %}'>
+</head>
+
+<body>
+<div class="tree well">
+<ul>
+  <li>
+    <span class="category">Parent</span><a href=""> Goes somewhere</a>
+    <ul>
+      <li>
+        <span class=\"category\">Grand Child</span> <a href=\"\">Goes somewhere</a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <span class="category">Child</span><a href=""> Goes somewhere</a>
+        <ul>
+          <li>
+            <span class="category">Grand Child</span> <a href="">Goes somewhere</a>
+          </li>
+        </ul>
+      </li>
+
+    </ul>
+  </li>
+</ul>
+</div>
+
+<script src='{% static "js/jquery-2.2.0.min.js" %}'></script>
+<script src='{% static "js/page/tree.js" %}'></script>
+<script src='{% static "js/page/category_tree.js" %}'></script>
+
+</body>
+</html>
+

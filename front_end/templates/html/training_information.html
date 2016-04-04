@@ -1,0 +1,102 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}{% if is_himself %}My Training Information{% else %}Training Information of {{ user_info.nickname }}{% endif %} - SDUST ACMer{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href='{% static "css/metroStyle/metroStyle.css" %}'>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+      <p id="target-user" hidden>{{ user_info.username }}</p>
+      <p id="self-user" hidden>{{ user_status.username }}</p>
+      <div class="container">
+        <br>
+        <div class="row" style="word-wrap: break-word;word-break:break-all;">
+          <div class="col-lg-5">
+            <h1 class="display-1">{{ user_info.nickname }}</h1>
+            <p class="hidden-md-down">Username: {{ user_info.username }}<br>Sex: {{ user_info.sex }}{% if user_info.school != None %}<br>School: {{ user_info.school }}{% endif %}</p>
+            <p class="hidden-md-up">Username: {{ user_info.username }}  , Sex: {{ user_info.school }}</p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 container">
+            <h1 class="display-1 hidden-md-down">{{ user_info.submission_number }}</h1>
+            <p><span class="hidden-lg-up display-1">{{ user_info.submission_number }}  </span><big>Total Submissions</big></p>
+          </div>
+          <div class="col-lg-2 container">
+            <h1 class="display-1 hidden-md-down">{{ user_info.problem_solved_number }}</h1>
+            <p><span class="hidden-lg-up display-1">{{ user_info.problem_solved_number }}  </span><big>Total Solved</big></p>
+          </div>
+
+          <div class="col-lg-2 col-md-6 btn-group-vertical">
+          {% if not is_himself %}
+
+          {% if has_followed %}
+            <a id="btn-unfollow-user" class="btn btn-danger col-xs-12">Unfollow</a>
+          {% else %}
+            <a id="btn-follow-user" class="btn btn-success col-xs-12">Follow</a>
+          {% endif %}
+
+          {% if can_manage %}
+            <a class="btn"></a>
+            <a class="btn btn-warning col-xs-12" href="/user/settings/{{ user_info.username }}/">Manage</a>
+          {% endif %}
+
+          {% endif %}
+          {% if is_himself or can_manage %}
+            <a id="btn-update-submissions" class="btn btn-primary col-xs-12 {% if user_info.updating %}disabled{% endif %}">{% if user_info.updating %}Updating ...{% else %}Update{% endif %}</a>
+          {% endif %}
+          </div>
+        </div>
+
+        <table class="table col-xs-12">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+
+        <div class="col-xs-12">
+          <nav class="navbar navbar-dark bg-inverse">
+            <ul class="nav navbar-nav">
+              <li id="li-show-submissions" class="nav-item">
+                <a id="btn-show-submissions" class="nav-link" href="javascript:void(0)">Submissions</a>
+              </li>
+              <li id="li-show-problems" class="nav-item">
+                <a id="btn-show-problems" class="nav-link" href="javascript:void(0)">Problems</a>
+              </li>
+              <li id="li-show-categories" class="nav-item">
+                <a id="btn-show-categories" class="nav-link" href="javascript:void(0)">Analysis</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+      </div>
+
+      <br>
+      <br>
+
+      <div id="div-submissions" class="container jumbotron">
+        <center><h1 id="h-div-submissions-loading">Loading ...</h1></center>
+
+      </div>
+
+      <div id="div-problems" class="container jumbotron">
+        <center><h1 id="h-div-problems-loading">Loading ...</h1></center>
+
+      </div>
+
+      <div id="div-categories" class="container">
+        <ul id="category-tree" class="ztree"></ul>
+      </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/jquery.ztree.all.min.js" %}'></script>
+<script src='{% static "js/page/training_info.js" %}'></script>
+<script src='{% static "js/page/training_info_ztree.js" %}'></script>
+<script src='{% static "js/page/calculate_time.js" %}'></script>
+{% endblock %}

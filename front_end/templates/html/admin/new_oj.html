@@ -1,0 +1,21 @@
+{% extends "html/admin/oj_settings.html" %}
+
+{% load staticfiles %}
+
+{% block title %}New OJ - SDUST ACMer{% endblock %}
+
+{% block head %}<h1 id="h-head">New OJ</h1>{% endblock %}
+
+{% block oj_unavailable %}checked{% endblock %}
+
+{% block save_all %}
+          <tr>
+            <td>
+              <a id="btn-add-new-oj" class="btn btn-primary col-xs-12" href="javascript:void(0)">Add New OJ</a>
+            </td>
+          </tr>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/new_oj.js" %}'></script>
+{% endblock %}

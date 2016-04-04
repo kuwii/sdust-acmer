@@ -1,0 +1,187 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Settings - SDUST ACMer{% endblock %}
+
+{% block body %}
+<div class="container">
+  <p id="target-user" hidden>{{ user_info.username }}</p>
+  <div class="row">
+    <div class="col-lg-3 hidden-md-down">
+      <div class="btn-group-vertical col-md-12">
+        <a class="btn btn-secondary" href="#h-personal-information">Personal Information</a>
+        <a class="btn btn-secondary" href="#h-accounts">Accounts</a>
+        <a class="btn btn-secondary" href="#h-change-password">Change Password</a>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <form>
+        <table class="table">
+          <tr>
+            <td id="td-personal-info">
+              <h3 id="h-personal-information">Personal Information</h3>
+              <br>
+              <div>
+                <div id="div-form-group-nickname" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-nickname">Nickname</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="64" class="form-control" id="input-nickname" placeholder="Your Username" value="{% if user_info.nickname != None %}{{ user_info.nickname }}{% else %}{% endif %}">
+                  </div>
+                </div>
+
+                <div id="div-form-group-sex" class="form-group row">
+                  <label class="col-sm-2">Sex</label>
+                  <div class="col-sm-10">
+                    <div>
+                      <label class="radio-inline">
+                        <input id="input-male" type="radio" name="radio-user-sex" value="male" {% if user_info.sex == "male" %}checked{% endif %}>Male
+                      </label>
+                      <label class="radio-inline">
+                        <input id="input-female" type="radio" name="radio-user-sex" value="female" {% if user_info.sex == "female" %}checked{% endif %}>Female
+                      </label>
+                      <label class="radio-inline">
+                        <input id="input-secret" type="radio" name="radio-user-sex" value="secret" {% if user_info.sex == "secret" %}checked{% endif %}>Secret
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="div-form-group-school" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-school">School</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="128" class="form-control" id="input-school" placeholder="Your School" value="{% if user_info.school != None %}{{ user_info.school }}{% else %}{% endif %}">
+                  </div>
+                </div>
+
+                <br>
+                <a id="btn-save-personal-info" class="col-xs-12 btn btn-primary">Save Personal Information</a>
+              </div>
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col-sm-6"><h3 id="h-accounts">Accounts</h3></div>
+                <div class="col-sm-6"><p class="pull-right text-muted">{{ accounts.length }} accounts</p></div>
+              </div>
+              <br>
+
+              <div>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                    <th hidden>ID</th>
+                    <th>OJ</th>
+                    <th>Account</th>
+                    <th>Operation</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for i in accounts.slice %}
+                    <tr>
+                      <td class="id-oj-name" hidden>{{ i.OJ_id }}</td>
+                      <td>{{ i.OJ_caption }}</td>
+                      <td>{{ i.account }}</td>
+                      <td>
+                        <a class="btn btn-danger btn-delete-account">Delete</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+
+                <div class="row">
+                  <div class="col-xs-1">
+                    <a id="btn-add-account" class="btn btn-primary-outline" data-toggle="modal" data-target="#div-new-account-modal"><h4><b>+</b></h4></a>
+                  </div>
+                  <div class="col-xs-11">
+                    <label class="form-control-label" for="btn-add-account"><big>Add New Account</big></label>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h3 id="h-change-password">Change Password</h3>
+              <br>
+              <div id="div-form-group-old-password" class="form-group row" {% if not is_himself%}hidden{% endif %}>
+                <label class="col-sm-2 form-control-label" for="input-old-password">Old</label>
+                <div class="col-sm-10">
+                  <input type="password" maxlength="32" class="form-control" id="input-old-password" placeholder="Old password" {% if not is_himself%}disabled{% endif %}>
+                </div>
+              </div>
+
+              <div id="div-form-group-new-password" class="form-group row">
+                <label class="col-sm-2 form-control-label" for="input-new-password">New</label>
+                <div class="col-sm-10">
+                  <input type="password" maxlength="32" class="form-control" id="input-new-password" placeholder="New password">
+                </div>
+              </div>
+
+              <div id="div-form-group-confirm" class="form-group row">
+                <label class="col-sm-2 form-control-label" for="input-confirm">Confirm</label>
+                <div class="col-sm-10">
+                  <input type="password" maxlength="32" class="form-control" id="input-confirm" placeholder="Confirm Password">
+                </div>
+              </div>
+
+              {% if is_himself %}
+              <p class="text-muted">After reset the password, you'll need to sign in again.</p>
+              {% endif %}
+
+
+              <br>
+              <a id="btn-save-password" class="col-xs-12 btn btn-primary">Save Password</a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="div-new-account-modal" tabindex="-1" role="dialog" aria-labelledby="div-new-account-modal-label" aria-hidden="true">  <div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Cancel</span>
+      </button>
+      <h4 id="h-new-account" class="modal-title">New Account</h4>
+    </div>
+
+    <div class="modal-body">
+      <div id="div-form-group-new-account-oj" class="form-group row">
+        <label class="col-sm-2 form-control-label" for="select-new-account-oj">OJ</label>
+        <div class="col-sm-10">
+          <select id="select-new-account-oj" class="c-select col-xs-12 form-control">
+          {% for oj in oj_all.slice %}
+            <option value="{{ oj.name }}">{{ oj.caption }}</option>
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div id="div-form-group-new-account-account" class="form-group row">
+        <label class="col-sm-2 form-control-label" for="input-new-account-account">Account</label>
+        <div class="col-sm-10">
+          <input type="text" maxlength="32" class="form-control" id="input-new-account-account" placeholder="Account">
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button id="btn-add-new-account" type="button" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/settings.js" %}'></script>
+{% endblock %}

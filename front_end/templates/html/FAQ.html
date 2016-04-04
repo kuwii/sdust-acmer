@@ -1,0 +1,24 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}FAQ - SDUST ACMer{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h1 class="display-4 text-muted">FAQ</h1>
+
+  <h4>Q: What does this website do?</h4>
+  <p>A: This website is designed to help ACMers in SDUST to analyse their training information on other online judge systems. In this website, you can get your submission from other OJ and we will analyse them for you. You can also search other users' analysis and follow them.</p>
+
+  <h4>Q: My English isn't very well. Does this website have a Chinese version?</h4>
+  <p>A: I believe English is a basic skill for an ACMer. So learn it well.</p>
+
+  <h4>Q: This website sucks! I need more functions!</h4>
+  <p>A: Sorry for your inconvenience. The website is still under construction. Functions will be improved in the future.</p>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/faq.js" %}'></script>
+{% endblock %}

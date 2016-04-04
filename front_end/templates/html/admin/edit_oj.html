@@ -1,0 +1,50 @@
+{% extends "html/admin/oj_settings.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Edit OJ - SDUST ACMer{% endblock %}
+
+{% block head %}<h1 id="h-head">{{ oj.caption }}</h1>{% endblock %}
+
+{% block oj_name %}{{ oj.name }}{% endblock %}
+
+{% block lock_oj_name %}readonly{% endblock %}
+
+{% block oj_caption %}{{ oj.caption }}{% endblock %}
+
+{% block oj_available %} {% if oj.available %}checked{% endif %} {% endblock %}
+{% block oj_unavailable %}{% if not oj.available %}checked{% endif %}{% endblock %}
+
+{% block oj_crawler_problem %}{% if oj.crawler_problem != None %}{{ oj.crawler_problem }}{% endif %}{% endblock %}
+
+{% block oj_crawler_submission %}{% if oj.crawler_submission != None %}{{ oj.crawler_submission }}{% endif %}{% endblock %}
+
+{% block oj_crawler_category %}{% if oj.crawler_category != None %}{{ oj.crawler_category }}{% endif %}{% endblock %}
+
+{% block other_items %}
+<tr>
+  <td id="td-delete-oj">
+    <h3 id="h-delete-oj">Delete OJ</h3>
+    <p>Please notice that after you have done this, all information related to this OJ will be deleted, including problems, submissions and accounts.<br>Please make sure that you really want to do this.</p>
+
+    <a class="btn text-warning" type="button" data-toggle="collapse" data-target="#div-delete-oj">Yes, I really want to delete this oj.</a>
+    <div id="div-delete-oj" class="collapse">
+      <div class="p-a">
+        <a id="btn-delete-oj" class="btn btn-danger col-xs-12">Delete This OJ</a>
+      </div>
+    </div>
+  </td>
+</tr>
+{% endblock %}
+
+{% block save_all %}
+          <tr>
+            <td>
+              <a id="btn-edit-oj" class="btn btn-primary col-xs-12" href="javascript:void(0)">Save</a>
+            </td>
+          </tr>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/edit_oj.js" %}'></script>
+{% endblock %}

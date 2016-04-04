@@ -1,0 +1,138 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}For Site Administrators - SDUST ACMer{% endblock %}
+
+{% block body %}
+<div class="container">
+  <p id="target-user" hidden>{{ username }}</p>
+  <div class="row">
+    <div class="col-lg-3 hidden-md-down">
+      <div class="btn-group-vertical col-md-12">
+        <a class="btn btn-secondary" href="#h-oj-status">OJ Status</a>
+        <a class="btn btn-secondary" href="#h-official-category">Update Problems</a>
+        <a class="btn btn-secondary" href="#h-official-category">Official Category</a>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <form>
+        <table class="table">
+          <tr>
+            <td id="td-oj-status">
+              <h3 id="h-oj-status">OJ Status</h3>
+              <br>
+
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                  <th>Name</th>
+                  <th>Caption</th>
+                  <th>Available</th>
+                  <th>Operation</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for oj in oj_all.slice %}
+                  <tr>
+                    <td>{{ oj.name }}</td>
+                    <td>{{ oj.caption }}</td>
+                  {% if oj.available %}
+                    <td class="text-success">Y</td>
+                  {% else %}
+                    <td class="text-danger">N</td>
+                  {% endif %}
+                    <td>
+                      <a class="btn btn-secondary col-xs-12" href="/admin/edit-oj/{{ oj.name }}/">Edit</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+
+              <a class="btn btn-primary col-xs-12" href="../new-oj/">Add New OJ</a>
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h3 id="h-update-problem">Update Problems</h3>
+              <br>
+
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Caption</th>
+                    <th>Last Update Time</th>
+                    <th>Operation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for oj in oj_all.slice %}
+                  <tr>
+                    <td class="oj-name">{{ oj.name }}</td>
+                    <td>{{ oj.caption }}</td>
+                    <td class="calculate-time">{{ oj.last_update_time }}</td>
+                    <td>
+                      <a class="btn-update-problems btn btn-secondary col-xs-12 {% if not oj.available or oj.updating %}disabled{% endif %}")>{% if oj.updating %}Updating{% else %}Update{% endif %}</a>
+
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+              <div hidden>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <h3 id="h-official-category">Official Category</h3>
+              <br>
+              <div>
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Caption</th>
+                    <th>Last Update Time</th>
+                    <th>Update By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for oj in oj_all.slice %}
+                  <tr>
+                    <td class="oj-name">{{ oj.name }}</td>
+                    <td>{{ oj.caption }}</td>
+                    <td class="calculate-time">{{ oj.last_update_time }}</td>
+                    <td>
+                      <div class="btn-group col-xs-12">
+                        <a class="btn btn-secondary col-xs-6 disabled">{% if oj.updating %}Updating{% else %}Website{% endif %}</a>
+                        <a class="btn btn-secondary col-xs-6 {% if not oj.available or oj.updating %}disabled{% endif %}" href="/admin/upload-xml/{{ oj.name }}/">{% if oj.updating %}Updating{% else %}File{% endif %}</a>
+                      </div>
+
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+              </div>
+              <div hidden>
+
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/for_admin.js" %}'></script>
+<script src='{% static "js/page/calculate_time.js" %}'></script>
+{% endblock %}

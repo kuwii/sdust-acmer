@@ -1,0 +1,100 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2 hidden-md-down"></div>
+    <div class="col-lg-8">
+      {% block head %}{% endblock %}
+      <form>
+        <table class="table">
+          <tr>
+            <td id="td-basic-info">
+              <h3 id="h-basic-info">Basic OJ Information</h3>
+              <br>
+              <div>
+                <div id="div-form-group-name" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-name">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="8" class="form-control" id="input-name" placeholder="ID of the OJ" value="{% block oj_name %}{% endblock %}" {% block lock_oj_name %}{% endblock %}>
+                  </div>
+                </div>
+
+                <div id="div-form-group-caption" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-caption">Caption</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="64" class="form-control" id="input-caption" placeholder="Caption of the OJ" value="{% block oj_caption %}{% endblock %}">
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td id="td-status">
+              <h3 id="h-status">Status</h3>
+              <br>
+              <div>
+                <div class="form-group row">
+                  <label class="col-sm-2">Status</label>
+                  <div class="col-sm-10">
+                    <div>
+                      <label class="radio-inline">
+                        <input id="input-available" type="radio" name="radio-status" value="available" {% block oj_available %}{% endblock %}>Available
+                      </label>
+                      <label class="radio-inline">
+                        <input id="input-unavailable" type="radio" name="radio-status" value="unavailable" {% block oj_unavailable %}{% endblock %}>Unavailable
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td id="td-functions">
+              <h3 id="h-functions">Crawlers</h3>
+              <br>
+              <div>
+                <div id="div-form-group-crawler-problem" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-crawler-problem">Problem</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="32" class="form-control" id="input-crawler-problem" placeholder="Crawler to update problems" value="{% block oj_crawler_problem %}{% endblock %}">
+                  </div>
+                </div>
+
+                <div id="div-form-group-crawler-submission" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-crawler-submission">Submission</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="32" class="form-control" id="input-crawler-submission" placeholder="Crawler to update submissions" value="{% block oj_crawler_submission %}{% endblock %}">
+                  </div>
+                </div>
+
+                <div id="div-form-group-crawler-category" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-crawler-category">Category</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="32" class="form-control" id="input-crawler-category" placeholder="Crawler to update submissions" value="{% block oj_crawler_category %}{% endblock %}">
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          {% block other_items %}{% endblock %}
+
+          {% block save_all %}
+          {% endblock %}
+
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/settings.js" %}'></script>
+{% endblock %}

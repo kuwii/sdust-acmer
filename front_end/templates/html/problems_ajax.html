@@ -1,0 +1,34 @@
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-xs-2">Problem ID</th>
+            <th class="col-xs-3">Problem</th>
+            <th class="col-xs-3">Status</th>
+            <th class="col-xs-2">First Submission</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for problem in problems.slice %}
+          <tr>
+            <td class="col-xs-2">
+              <h4>{{ problem.pid }}</h4>
+              <p>{{ problem.oj_caption }}</p>
+            </td>
+            <td class="col-xs-3">
+              <h3>{{ problem.title }}</h3>
+            </td>
+            <td class="col-xs-3">
+              {% if problem.user_relation__solved %}
+              <h3 class="text-success">Solved</h3>
+              <p>Solved Time: <span class="calculate-time">{{ problem.user_relation__ac_time }}</span></p>
+              {% else %}
+              <h3 class="text-muted">Tried</h3>
+              {% endif %}
+            </td>
+            <td class="col-xs-2">
+              <p class="calculate-time">{{ problem.user_relation__first_time }}</p>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>

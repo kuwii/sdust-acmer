@@ -1,0 +1,72 @@
+{% extends "html/base.html" %}
+
+{% load staticfiles %}
+
+{% block basic_body %}
+    <nav class="navbar navbar-static-top navbar-light bg-faded" style="margin-bottom: 20px;">
+      <button class="navbar-toggler hidden-sm-up pull-left" type="button" data-toggle="collapse" data-target="#navbar-main-menu" aria-controls="navbar-header">
+        &#9776;
+      </button>
+      <div class="collapse navbar-toggleable-xs" id="navbar-main-menu">
+        <a class="navbar-brand" href="/home/"><b>ACMer</b></a>
+        <ul class="nav navbar-nav pull-left">
+          <li class="nav-item">
+            <form class="form-inline navbar-form pull-left">
+              <div class="input-group">
+                <input id="input-search-user" class="form-control" type="text" placeholder="Search User & Group" onkeydown="if(event.keyCode==13){document.getElementById('btn-search-user').click();return false;}">
+                <span class="input-group-btn">
+                  <button id="btn-search-user" class="btn btn-primary-outline" type="button">Search</button>
+                </span>
+              </div>
+            </form>
+          </li>
+          <li id="li-faq" class="nav-item">
+            <a class="nav-link" href="/faq/">FAQ</a>
+          </li>
+          <li id="li-api" class="nav-item">
+            <a class="nav-link" href="/api-help/index/">API</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+        {% if not user_status.authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/user/register/">Sign up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/login/">Sign in</a>
+          </li>
+        {% else %}
+          <li class="nav-item dropdown">
+            <a id="a-user-menu" class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">{{ user_status.nickname }}</a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <h6 class="dropdown-header">My Information</h6>
+              <a class="dropdown-item" href="/user/info/{{ user_status.username }}/">Training Information</a>
+              <a class="dropdown-item disabled" href="javascript:void(0)">Groups</a>
+              <a class="dropdown-item" href="/user/follow/{{ user_status.username }}">Following & Followers</a>
+
+            {% if user_status.identity.manager %}
+              <div class="dropdown-divider"></div>
+              <h6 class="dropdown-header">Managing the website</h6>
+              <a class="dropdown-item disabled" href="javascript:void(0)">For User Managers</a>
+            {% if user_status.identity.admin %}
+              <a class="dropdown-item" href="/admin/site-admin/">For Site Administrators</a>
+            {% endif %}
+            {% endif %}
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/user/settings/{{ user_status.username }}/">Settings</a>
+              <div class="dropdown-divider"></div>
+              <a id="a-user-menu-sign-out" class="dropdown-item" href="javascript:void(0)">Sign out</a>
+            </div>
+          </li>
+        {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+{% endblock %}
+
+{% block basic_script %}
+<script src='{% static "js/page/basic_page.js" %}'></script>
+{% block script %}{% endblock %}
+{% endblock %}
