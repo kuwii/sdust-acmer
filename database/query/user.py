@@ -81,17 +81,7 @@ def search_user(**kwargs):
     return list(ret.values())
 
 
-def get_group(group_name):
-    """
-    获取指定用户组。
-    :param group_name: 用户组的标识
-    :return: 如果用户组存在，返回包含用户组信息的字典，否则返回None
-    """
-    ret = first_one(UserGroup, name=group_name)
-    return to_dict(ret)
-
-
-def user_group(username, start=0, end=QueryLimit):
+def user_group(username):
     """
     获取用户所在的用户组。
     :param username: 用户名
@@ -103,43 +93,7 @@ def user_group(username, start=0, end=QueryLimit):
     if user is None:
         return []
     ret = user.group.all()
-    return to_list(ret, start=start, end=end)
-
-
-def group_user(group_name, start=0, end=QueryLimit):
-    """
-    获取用户组内的所有用户。
-    :param group_name: 组名
-    :param start: 查询结果切片的起点
-    :param end: 查询结果切片的终点
-    :return: 如果组存在，返回组内所有用户信息；否则返回空列表
-    """
-    group = get_group(group_name)
-    if group is None:
-        return []
-    user_ret = group.user.all()
-    return to_list(user_ret, start=start, end=end)
-
-
-def search_group(group_name=None, group_caption=None, start=0, end=QueryLimit):
-    """
-    根据用户组的标识和名称搜索用户组，标识和用户组不可同时为空。
-    :param group_name: 用户组的标识
-    :param group_caption: 用户组的名称
-    :param start: 查询结果切片的起点
-    :param end: 查询结果切片的终点
-    :return: 搜索结果，列表
-    """
-    if group_name is None and group_caption is None:
-        return []
-
-    ret = UserGroup.objects
-    if group_name is not None:
-        ret = ret.filter(name__icontains=group_name)
-    if group_caption is not None:
-        ret = ret.filter(caption__icontains=group_caption)
-
-    return to_list(ret, start=start, end=end)
+    return to_list(ret)
 
 
 def user_updating(username):

@@ -21,4 +21,11 @@ $(document).ready(function() {
       location.href = "/user/search/"+value+"/0/50/";
     }
   });
+
+  $("#btn-search-group").click(function() {
+    var value = $("#input-search-user").val();
+    if (value != "") {
+      location.href = "/group/search/"+value+"/0/50/";
+    }
+  });
 });

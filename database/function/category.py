@@ -74,15 +74,14 @@ def __generate_oj_category(oj, category_dict):
         return False
 
     if database_exists(ProblemCategory, name=category_dict['name']):
-        __generate_oj_category_error_info = operation_failed(InfoType.Exists, InfoField.Table.ProblemCategory)
-        return False
-
-    category = ProblemCategory(
-        name=category_dict['name'],
-        caption=category_dict['caption'],
-        oj=oj
-    )
-    __category_create.append(category)
+        category = database_get(ProblemCategory, name=category_dict['name'])
+    else:
+        category = ProblemCategory(
+            name=category_dict['name'],
+            caption=category_dict['caption'],
+            oj=oj
+        )
+        __category_create.append(category)
 
     category_problems = set()
 
@@ -93,21 +92,33 @@ def __generate_oj_category(oj, category_dict):
             if child_type == 'problem':
                 if 'pid' in child_dict and child_dict['pid'] in __problem_pid:
                     problem = __problem_pid[child_dict['pid']]
-                    relation = ProblemCategoryProblemRelation(
-                        category=category,
-                        problem=problem,
-                        direct=True
-                    )
-                    __category_problem_relation.append(relation)
+                    if database_exists(
+                        ProblemCategoryProblemRelation,
+                        category=category, problem=problem, direct=True
+                    ):
+                        pass
+                    else:
+                        relation = ProblemCategoryProblemRelation(
+                            category=category,
+                            problem=problem,
+                            direct=True
+                        )
+                        __category_problem_relation.append(relation)
                     category_problems.add(problem)
                 elif 'index_id' in child_dict and child_dict['index_id'] in __problem_index_pid:
                     problem = __problem_index_pid[child_dict['index_id']]
-                    relation = ProblemCategoryProblemRelation(
-                        category=category,
-                        problem=problem,
-                        direct=True
-                    )
-                    __category_problem_relation.append(relation)
+                    if database_exists(
+                        ProblemCategoryProblemRelation,
+                        category=category, problem=problem, direct=True
+                    ):
+                        pass
+                    else:
+                        relation = ProblemCategoryProblemRelation(
+                            category=category,
+                            problem=problem,
+                            direct=True
+                        )
+                        __category_problem_relation.append(relation)
                     category_problems.add(problem)
             if child_type == 'category':
                 child_return = __generate_oj_category(oj, child_dict)
@@ -116,21 +127,33 @@ def __generate_oj_category(oj, category_dict):
 
                 child_category = child_return['category']
 
-                relation_category = ProblemCategoryCategoryRelation(
-                    parent=category,
-                    child=child_category
-                )
-                __category_category_relation.append(relation_category)
+                if database_exists(
+                    ProblemCategoryCategoryRelation,
+                    parent=category, child=child_category
+                ):
+                    pass
+                else:
+                    relation_category = ProblemCategoryCategoryRelation(
+                        parent=category,
+                        child=child_category
+                    )
+                    __category_category_relation.append(relation_category)
 
                 child_problems = child_return['problem']
 
                 for problem in child_problems:
-                    relation_problem = ProblemCategoryProblemRelation(
-                        category=category,
-                        problem=problem,
-                        direct=False,
-                    )
-                    __category_problem_relation.append(relation_problem)
+                    if database_exists(
+                        ProblemCategoryProblemRelation,
+                        category=category, problem=problem, direct=False
+                    ):
+                        pass
+                    else:
+                        relation_problem = ProblemCategoryProblemRelation(
+                            category=category,
+                            problem=problem,
+                            direct=False,
+                        )
+                        __category_problem_relation.append(relation_problem)
                     category_problems.add(problem)
 
     return {

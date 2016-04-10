@@ -23,8 +23,13 @@ urlpatterns = [
 
     url(r'^home/', homepage, name='homepage'),
     url(r'^faq/', faq, name='faq'),
+
     url(r'^user/', include('front_end.url.user')),
+    url(r'^group/', include('front_end.url.group')),
+
     url(r'^admin/', include('front_end.url.admin')),
+    url(r'^manager/', include('front_end.url.manager')),
+
     url(r'^api/', include('api.urls.index')),
 
     url(r'^api-help/', include('front_end.url.api')),

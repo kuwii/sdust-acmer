@@ -28,10 +28,12 @@ class InfoField:
     class Table:
         OJ = 'OJ'
         User = 'USER'
+        UserGroup = 'USER_GROUP'
         Account = 'ACCOUNT'
         ProblemCategory = 'CATEGORY'
 
     class Relation:
+        UserGroupRelation = 'USER_GROUP_RELATION'
         ProblemCategoryChildren = 'CATEGORY_CHILDREN'
 
 

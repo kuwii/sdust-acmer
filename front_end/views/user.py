@@ -11,6 +11,7 @@ from database.query.user import user_following as database_user_following
 from database.query.user import user_followers as database_user_followers
 from database.query.permission import permitted_to_manage as database_permitted_to_manage
 from database.query.accounts import get_accounts as database_get_accounts
+from database.query.group import get_user_group as database_get_user_group
 
 from .util import user_status, has_login
 
@@ -130,4 +131,26 @@ def following_followers(request, username):
         'followers': followers,
         'following_number': len(following['slice']),
         'followers_number': len(followers['slice'])
+    })
+
+
+def user_group(request, username):
+    user_info = database_get_user(username)
+    if user_info is None:
+        return render(request, 'html/404.html', {
+            'user_status': user_status(request)
+        })
+
+    if request.user.username != username:
+        return render(request, 'html/404.html', {
+            'user_status': user_status(request)
+        })
+
+    groups_formal = database_get_user_group(username, formal=True)
+    groups_informal = database_get_user_group(username, formal=False)
+
+    return render(request, 'html/groups.html', {
+        'user_status': user_status(request),
+        'groups_formal': groups_formal,
+        'groups_informal': groups_informal
     })

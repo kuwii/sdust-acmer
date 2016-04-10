@@ -57,6 +57,14 @@ class ErrorInfo:
         invalid_username = 'INVALID_USER_NAME'
         wrong_sex_value = 'WRONG_SEX_VALUE'
 
+    class Group:
+        already_in_group = 'ALREADY_IN_GROUP'
+        applicant = 'IS_ALREADY_APPLICANT'
+        caption_needed = 'GROUP_CAPTION_NEEDED'
+        group_exists = 'GROUP_EXISTS'
+        group_not_exists = 'GROUP_NOT_EXISTS'
+        name_needed = 'GROUP_NAME_NEEDED'
+
     class Permission:
         no_permission = 'NO_PERMISSION'
         identity_required = 'IDENTITY_REQUIRED'

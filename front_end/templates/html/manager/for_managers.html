@@ -1,0 +1,76 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}For Managers - SDUST ACMer{% endblock %}
+
+{% block body %}
+<div class="container">
+  <p id="target-user" hidden>{{ username }}</p>
+  <div class="row">
+    <div class="col-lg-3 hidden-md-down">
+      <div class="btn-group-vertical col-md-12">
+        <a class="btn btn-secondary" href="#h-create-user-group">Create User Group</a>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <form>
+        <table class="table">
+          <tr>
+            <td id="td-create-user-group">
+              <h3 id="h-create-user-group">Create User Group</h3>
+              <br>
+              <form>
+                <div id="div-form-group-name" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-group-name">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="32" class="form-control" id="input-group-name" placeholder="Name of the Group" value="">
+                  </div>
+                </div>
+
+                <div id="div-form-group-caption" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-group-caption">Caption</label>
+                  <div class="col-sm-10">
+                    <input type="text" maxlength="64" class="form-control" id="input-group-caption" placeholder="Caption of the Group" value="">
+                  </div>
+                </div>
+
+                <div id="div-form-group-public" class="form-group row">
+                  <label class="col-sm-2">Public</label>
+                  <div class="col-sm-10">
+                    <div>
+                      <label class="radio-inline">
+                        <input id="input-public" type="radio" name="radio-group-public" value="true" >Public
+                      </label>
+                      <label class="radio-inline">
+                        <input id="input-private" type="radio" name="radio-group-public" value="false" checked>Private
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="div-form-group-introduction" class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="input-group-introduction">Introduction</label>
+                  <div class="col-sm-10">
+                    <textarea id="input-group-introduction" class="form-control" maxlength="1000"></textarea>
+                  </div>
+                </div>
+
+                <br>
+                <a id="btn-create-new-group" class="btn btn-primary col-xs-12">Create New Group</a>
+
+              </form>
+
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/for_managers.js" %}'></script>
+<script src='{% static "js/page/calculate_time.js" %}'></script>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Group Information - SDUST ACMer{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href='{% static "css/metroStyle/metroStyle.css" %}'>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+      <p id="self-user" hidden>{{ user_status.username }}</p>
+      <div class="container">
+        <div class="col-xs-12">
+          <nav class="navbar navbar-light bg-faded">
+            <ul class="nav navbar-nav pull-left">
+              <li id="li-show-basic" class="nav-item">
+                <a id="btn-show-basic" class="nav-link" href="javascript:void(0)">Basic Information</a>
+              </li>
+            {% if in_group %}
+              <li id="li-show-members" class="nav-item">
+                <a id="btn-show-members" class="nav-link" href="javascript:void(0)">Members</a>
+              </li>
+              <li id="li-show-categories" class="nav-item">
+                <a id="btn-show-categories" class="nav-link" href="javascript:void(0)">Analysis</a>
+              </li>
+            {% endif %}
+            </ul>
+          {% if user_status.authenticated  and not in_group%}
+            <ul class="nav navbar-nav pull-right">
+              <li class="nav-item">
+                <a id="btn-join-group" class="btn btn-primary">Join This Group</a>
+              </li>
+            </ul>
+          {% endif %}
+          </nav>
+        </div>
+
+      </div>
+
+      <br>
+      <br>
+
+      <div id="div-basic" class="container">
+        <h3 class="display-1">{{ group_info.caption }}</h3>
+        <br>
+        <div class="col-lg-8 col-md-10 col-xs-12">
+          <table class="table table-hover">
+            <tr><td>Name</td><td id="group-name">{{ group_info.name }}</td></tr>
+            <tr><td>Caption</td><td>{{ group_info.caption }}</td></tr>
+            <tr><td>Public</td><td>{{ group_info.public }}</td></tr>
+            <tr><td>Create Time</td><td class="calculate-time">{{ group_info.register_time }}</td></tr>
+            <tr><td colspan="2"></td></tr>
+            <tr><td>Introduction</td><td>{{ group_info.introduction }}</td></tr>
+          {% if in_group %}
+            <tr><td>Notice</td><td>{{ group_info.notice }}</td></tr>
+          {% endif %}
+          </table>
+        </div>
+      </div>
+
+    {% if in_group %}
+      <div id="div-members" class="container">
+        <div class="row" style="word-wrap: break-word;word-break:break-all;">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-4 col-sm-6 container">
+            <h1 class="display-1 hidden-md-down">{{ applicants.length }}</h1>
+            <p><span class="hidden-lg-up display-1">{{ applicants.length }}  </span><big>Applicants</big></p>
+          </div>
+          <div class="col-lg-1"></div>
+          <div class="col-lg-4 col-sm-6 container">
+            <h1 class="display-1 hidden-md-down">{{ members.length }}</h1>
+            <p><span class="hidden-lg-up display-1">{{ members.length }}  </span><big>Formal Members</big></p>
+          </div>
+        </div>
+        <br>
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Nickname</th>
+              <th>Username</th>
+              <th>Sex</th>
+              <th>School</th>
+              <th>Solved</th>
+              <th>Tried</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for user in members.slice %}
+            <tr>
+              <td><big><b>{% if user.nickname != None %}{{ user.nickname }}{% else %}--{% endif %}</b></big></td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.sex }}</td>
+              <td>{% if user.school != None %}{{ user.school }}{% else %}--{% endif %}</td>
+              <td>{{ user.problem_solved_number }}</td>
+              <td>{{ user.problem_tried_number }}</td>
+              <td>
+                <a class="btn btn-primary" href="/user/info/{{user.username}}/">See</a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="div-categories" class="container">
+        <table id="example-basic">
+          <thead>
+            <tr>
+              <th>Category</th>
+            {% for user in members.slice %}
+              <th>{{ user.username }}</th>
+            {% endfor %}
+            </tr>
+          </thead>
+          <tbody id="tobdy-categories">
+          </tbody>
+        </table>
+
+
+      </div>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/jquery.ztree.all.min.js" %}'></script>
+<script src='{% static "js/page/group_info.js" %}'></script>
+<script src='{% static "js/page/calculate_time.js" %}'></script>
+<script>
+$(document).ready(function() {
+  var table = $("#example-basic");
+
+  usernames = [];
+  {% for user in members.slice %}
+    usernames.push("{{ user.username }}")
+  {% endfor %}
+  usernames_str = JSON.stringify(usernames);
+
+  $.ajax({
+    type: "GET",
+    url: "/api/categories/get-users-info/"+usernames_str+"/",
+    async: true,
+    dataType: "json",
+    success: function(response) {
+      var cat = response.categories[0];
+      var row = $("<tr><td>"+cat.caption+"</td></tr>");
+      row.attr("data-tt-id", cat.name);
+      row.attr("data-tt-branch", true);
+
+      var user_data = cat.user_result;
+
+      for(var i = 0; i != user_data.length; ++i) {
+        row.append("<td>"+user_data[i].num_solved+"/"+user_data[i].num_tried+"/"+user_data[i].num_all+"-"+(user_data[i].num_solved/user_data[i].num_all * 100.0).toFixed(3)+"%"+"</td>");
+      }
+
+      $("#tobdy-categories").append(row);
+
+
+        table.treetable({
+          expandable: true,
+          theme: "vsStyle",
+          onNodeCollapse: function() {
+            var node = this;
+            table.treetable("unloadBranch", node);
+          },
+          onNodeExpand: function() {
+            var node = this;
+            name = this.id;
+
+            $.ajax({
+              type: "GET",
+              url: "/api/categories/get-users-info/"+usernames_str+"/",
+              data: {
+                'name': name
+              },
+              async: false,
+              dataType: "json",
+              success: function(response) {
+                var cats = response.categories;
+
+                for(var i = 0; i != cats.length; ++i) {
+                  var row = $("<tr><td>"+cats[i].caption+"</td></tr>");
+                  row.attr("data-tt-id", cats[i].name);
+                  row.attr("data-tt-branch", true);
+                  row.attr("data-tt-parent-id", name);
+
+                  var user_data = cats[i].user_result;
+                  for(var j = 0; j != user_data.length; ++j) {
+                    row.append("<td>"+user_data[j].num_solved+"/"+user_data[j].num_tried+"/"+user_data[j].num_all+"-"+(user_data[j].num_solved/user_data[j].num_all * 100.0).toFixed(3)+"%"+"</td>");
+                  }
+
+                  table.treetable("loadBranch", node, row);
+                }
+
+                var problems = response.problems;
+
+                for(var i = 0; i != problems.length; ++i) {
+                  var row = $("<tr><td>"+problems[i].title+"</td></tr>");
+                }
+              }
+            });
+          }
+        });
+
+          $("#example-basic tbody").on("mousedown", "tr", function() {
+            $(".selected").not(this).removeClass("selected");
+            $(this).toggleClass("selected");
+          });
+    }
+  });
+});
+</script>
+{% endblock %}

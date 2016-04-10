@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'SDUST_ACMER_DB',
         'USER': 'SDUST_ACMER_USR',
-        'PASSWORD': '123456',
+        'PASSWORD': 'sdustacmer2013database',
         'HOST': 'localhost',
     }
 }

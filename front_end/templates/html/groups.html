@@ -1,0 +1,102 @@
+{% extends "html/basic_page.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Groups - SDUST ACMer{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href='{% static "css/metroStyle/metroStyle.css" %}'>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+      <p id="target-user" hidden>{{ user_info.username }}</p>
+      <p id="self-user" hidden>{{ user_status.username }}</p>
+      <div class="container">
+        <br>
+        <div class="row" style="word-wrap: break-word;word-break:break-all;">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-4 col-sm-6 container">
+            <h1 class="display-1 hidden-md-down">{{ groups_formal.length }}</h1>
+            <p><span class="hidden-lg-up display-1">{{ groups_formal.length }}  </span><big>Joined</big></p>
+          </div>
+          <div class="col-lg-1"></div>
+          <div class="col-lg-4 col-sm-6 container">
+            <h1 class="display-1 hidden-md-down">{{ groups_informal.length }}</h1>
+            <p><span class="hidden-lg-up display-1">{{ groups_informal.length }}  </span><big>pending</big></p>
+          </div>
+        </div>
+
+        <table class="table col-xs-12">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+
+        <div class="col-xs-12">
+          <nav class="navbar navbar-dark bg-inverse">
+            <ul class="nav navbar-nav">
+              <li id="li-show-joined" class="nav-item active">
+                <a id="btn-show-joined" class="nav-link" href="javascript:void(0)">Joined</a>
+              </li>
+              <li id="li-show-pending" class="nav-item">
+                <a id="btn-show-pending" class="nav-link" href="javascript:void(0)">Pending</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <br>
+      <br>
+
+      <div class="container">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Caption</th>
+              <th>Public</th>
+              <th>Member</th>
+              <th>Register Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-joined">
+          {% for i in groups_formal.slice %}
+            <tr>
+              <td><big><b>{{ i.name }}</b></big></td>
+              <td>{{ i.caption }}</td>
+              <td>{{ i.public }}</td>
+              <td>{{ i.member_number }}</td>
+              <td class="calculate-time">{{ i.register_time }}</td>
+              <td>
+                <a class="btn btn-primary" href="/group/info/{{ i.name }}/">See</a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+
+          <tbody id="tbody-pending" hidden>
+          {% for i in groups_informal.slice %}
+            <tr>
+              <td><big><b>{{ i.name }}</b></big></td>
+              <td>{{ i.caption }}</td>
+              <td>{{ i.public }}</td>
+              <td>{{ i.member_number }}</td>
+              <td class="calculate-time">{{ i.register_time }}</td>
+              <td>
+                <a class="btn btn-primary" href="/group/info/{{ i.name }}/">See</a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/calculate_time.js" %}'></script>
+<script src='{% static "js/page/groups.js" %}'></script>
+{% endblock %}
