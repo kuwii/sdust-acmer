@@ -64,6 +64,10 @@ class ErrorInfo:
         group_exists = 'GROUP_EXISTS'
         group_not_exists = 'GROUP_NOT_EXISTS'
         name_needed = 'GROUP_NAME_NEEDED'
+        user_relation_not_exists = 'GROUP_USER_RELATION_NOT_EXISTS'
+        user_is_boss = 'GROUP_USER_IS_BOSS'
+        cannot_kick_yourself = 'CANNOT_KICK_YOURSELF'
+        cannot_kick_manager = 'CANNOT_KICK_MANAGER'
 
     class Permission:
         no_permission = 'NO_PERMISSION'

@@ -112,4 +112,43 @@ $(document).ready(function() {
       }
     });
   });
+
+  $("#btn-approve-user").click(function() {
+    $.ajax({
+      type: 'POST',
+      url: '/api/group/approve/',
+      data: {
+        'name': $("#group-name").text(),
+        'username': $(this).parent().parent().parent().children(".applicant-username").text()
+      },
+      dataType: 'text',
+      success(response) {
+        if(response == "SUCCESS") {
+          location.reload();
+        } else {
+          alert(response);
+        }
+      }
+    });
+  });
+
+  $("#btn-leave-group").click(function() {
+    if(confirm("Are you sure to leave this group? Notice that if you leave a private group, you still need to be approved again if you want to join the group again.")) {
+      $.ajax({
+        type: 'POST',
+        url: '/api/group/leave/',
+        data: {
+          'name': $("#group-name").text(),
+        },
+        dataType: 'text',
+        success(response) {
+          if(response == "SUCCESS") {
+            location.reload();
+          } else {
+            alert('You are the boss of the group, who must not leave the group.');
+          }
+        }
+      });
+    }
+  });
 });

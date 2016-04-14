@@ -1,0 +1,47 @@
+{% extends "html/group/group_input.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Group Settings - SDUST ACMer{% endblock %}
+
+{% block group_title %}{{ group_info.caption }}{% endblock %}
+
+{% block group_name %}{{ group_info.name }}{% endblock %}
+
+{% block group_caption %}{{ group_info.caption }}{% endblock %}
+
+{% block group_public_true %}{% if group_info.public == True %}checked{% endif %}{% endblock %}
+
+{% block group_public_false %}{% if group_info.public == False %}checked{% endif %}{% endblock %}
+
+{% block group_introduction %}{{ group_info.introduction }}{% endblock %}
+
+{% block name_disabled %}disabled{% endblock %}
+
+{% block other_items %}
+<tr>
+  <td id="td-delete-group">
+    <h3 id="h-delete-group">Delete This Group</h3>
+    <p>Please notice that after you have done this, all information related to this Group will be deleted.<br>Please make sure that you really want to do this.</p>
+
+    <a class="btn text-warning" type="button" data-toggle="collapse" data-target="#div-delete-group">Yes, I really want to delete this group.</a>
+    <div id="div-delete-group" class="collapse">
+      <div class="p-a">
+        <a id="btn-delete-group" class="btn btn-danger col-xs-12">DELETE THIS GROUP</a>
+      </div>
+    </div>
+  </td>
+</tr>
+{% endblock %}
+
+{% block save_all %}
+          <tr>
+            <td>
+              <a id="btn-edit-group" class="btn btn-primary col-xs-12" href="javascript:void(0)">Save</a>
+            </td>
+          </tr>
+{% endblock %}
+
+{% block script %}
+<script src='{% static "js/page/edit_group.js" %}'></script>
+{% endblock %}

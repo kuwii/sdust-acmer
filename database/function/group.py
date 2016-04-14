@@ -28,7 +28,7 @@ def create_group(username, **kwargs):
     if database_exists(UserGroup, name=name):
         return operation_failed(InfoType.Exists, InfoField.Table.UserGroup)
 
-    group = UserGroup(name=name, caption=caption, register_time=int(time.time()))
+    group = UserGroup(name=name, caption=caption, register_time=int(time.time()), member_number=1)
     relation = UserGroupRelation(user=user, group=group, identity=3)
 
     if 'public' in kwargs:
@@ -99,7 +99,7 @@ def join_group(group_name, identity_value, *args):
     return operation_succeeded()
 
 
-def quit_group(group_name, username):
+def leave_group(group_name, username):
     """
     退出用户组
     :param group_name:
@@ -110,10 +110,29 @@ def quit_group(group_name, username):
     if relation is None:
         return operation_failed(InfoType.NotExists, InfoField.Relation.UserGroupRelation)
 
+    if relation.identity == 3:
+        return operation_failed(InfoType.Wrong, InfoField.Relation.UserGroupRelation)
+
     relation.delete()
 
     group = database_get(UserGroup, name=group_name)
     group.member_number -= 1
     group.save()
 
+    return operation_succeeded()
+
+
+def approve_user(group_name, username):
+    """
+    批准用户申请
+    :param group_name:
+    :param username:
+    :return:
+    """
+    relation = database_get(UserGroupRelation, user_id=username, group_id=group_name)
+    if relation is None:
+        return operation_failed(InfoType.NotExists, InfoField.Relation.UserGroupRelation)
+    if relation.identity == 0:
+        relation.identity = 1
+    relation.save()
     return operation_succeeded()
