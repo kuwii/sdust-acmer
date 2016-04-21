@@ -46,7 +46,7 @@ def __check_oj_uva():
     :return: 无
     """
     from .models import OJ
-    print('Checking Uva OJ ...', end='')
+    print('Checking Uva ...', end='')
     if OJ.objects.filter(name='uva').exists():
         print(' OK')
     else:
@@ -60,6 +60,22 @@ def __check_oj_uva():
             crawler_problem='UVA_PROBLEMS',
             crawler_submission='UVA_SUBMISSIONS',
             crawler_category='UVA_CATEGORIES'
+        )
+        print(' Done')
+    print('Checking POJ ...', end='')
+    if OJ.objects.filter(name='poj').exists():
+        print(' OK')
+    else:
+        print(' Not Exists ... ', end='')
+        print('Creating ...', end='')
+        from database.function.oj import create_oj
+        create_oj(
+            name='poj',
+            caption='PKU JudgeOnline',
+            available=True,
+            crawler_problem='POJ_PROBLEMS',
+            crawler_submission='POJ_SUBMISSIONS',
+            crawler_category='POJ_CATEGORIES'
         )
         print(' Done')
 

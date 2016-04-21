@@ -1,6 +1,5 @@
 import json
 import time
-import xml.etree.ElementTree
 
 from lxml import etree as __etree
 

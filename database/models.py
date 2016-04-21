@@ -221,8 +221,8 @@ class Problem(models.Model):
     available = models.BooleanField(default=False)                                  # 题目是否可用
     special_judge = models.BooleanField(default=False)                              # 是否是special judge
 
-    time_limit = models.IntegerField(default=0)                                     # 题目的时间限制
-    memory_limit = models.IntegerField(default=-1)                                  # 题目的内存限制
+    time_limit = models.IntegerField(default=0)                                     # 题目的时间限制, ms
+    memory_limit = models.IntegerField(default=-1)                                  # 题目的内存限制, k
 
     description = models.TextField(default='')                                      # 题意描述，暂不使用
     input = models.TextField(default='')                                            # 输入描述，暂不使用

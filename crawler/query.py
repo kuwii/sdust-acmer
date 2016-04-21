@@ -1,16 +1,20 @@
-import crawler.function.UVa as __crawler_uva
+import crawler.function.UVa as __CrawlerUVa
+import crawler.function.POJ as __CrawlerPOJ
 
 
 __crawler_problems_entry = {
-    'UVA_PROBLEMS': __crawler_uva.get_problems
+    'UVA_PROBLEMS': __CrawlerUVa.get_problems,
+    'POJ_PROBLEMS': __CrawlerPOJ.get_problems
 }
 
 __crawler_submissions_entry = {
-    'UVA_SUBMISSIONS': __crawler_uva.get_submissions
+    'UVA_SUBMISSIONS': __CrawlerUVa.get_submissions,
+    'POJ_SUBMISSIONS': __CrawlerPOJ.get_submissions
 }
 
 __crawler_categories_entry = {
-    'UVA_CATEGORIES': __crawler_uva.get_uva_category
+    'UVA_CATEGORIES': __CrawlerUVa.get_uva_category,
+    'POJ_CATEGORIES': __CrawlerPOJ.get_categories
 }
 
 
